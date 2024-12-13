@@ -84,7 +84,9 @@ class MovieSessionListSerializer(MovieSessionSerializer):
 
 
 class TicketSerializer(serializers.ModelSerializer):
-    movie_session = serializers.PrimaryKeyRelatedField(queryset=MovieSession.objects.all())
+    movie_session = serializers.PrimaryKeyRelatedField(
+        queryset=MovieSession.objects.all()
+    )
 
     class Meta:
         model = Ticket
@@ -97,7 +99,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
         if not movie_session:
             raise serializers.ValidationError(
-                {"movie_session": "Movie session is required to validate row and seat."}
+                {"movie_session": "Movie session is required"}
             )
 
         cinema_hall = movie_session.cinema_hall
