@@ -11,8 +11,6 @@ from cinema.models import (
     MovieSession,
     Order
 )
-
-
 from cinema.serializers import (
     GenreSerializer,
     ActorSerializer,
@@ -22,7 +20,9 @@ from cinema.serializers import (
     MovieSessionListSerializer,
     MovieDetailSerializer,
     MovieSessionDetailSerializer,
-    MovieListSerializer, OrderSerializer, OrderListSerializer,
+    MovieListSerializer,
+    OrderSerializer,
+    OrderListSerializer
 )
 
 
@@ -101,13 +101,12 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
 
         if date:
             date = parse_date(date)
-            if date:
-                queryset = queryset.filter(show_time__date=date)
+            queryset = queryset.filter(show_time__date=date)
 
         if movie:
             queryset = queryset.filter(movie_id=movie)
 
-        if self.action in "list":
+        if self.action == "list":
             return (
                 queryset
                 .select_related("movie", "cinema_hall")
@@ -119,7 +118,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
                     )
                 )
             )
-        elif self.action in "retrieve":
+        elif self.action == "retrieve":
             return queryset.select_related()
         return queryset.distinct()
 
